@@ -5,11 +5,11 @@ use std::thread;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use serde::Serialize;
-use tracing::Event;
 use tracing::field::Field;
+use tracing::Event;
 use tracing_subscriber::field::Visit;
-use tracing_subscriber::Layer;
 use tracing_subscriber::layer::Context;
+use tracing_subscriber::Layer;
 
 pub struct LokiLayer {
     default_values: HashMap<String, String>,
