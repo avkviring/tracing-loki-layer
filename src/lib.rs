@@ -5,11 +5,11 @@ use std::thread;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use serde::Serialize;
-use tracing::field::Field;
 use tracing::Event;
+use tracing::field::Field;
 use tracing_subscriber::field::Visit;
-use tracing_subscriber::layer::Context;
 use tracing_subscriber::Layer;
+use tracing_subscriber::layer::Context;
 
 pub struct LokiLayer {
     default_values: HashMap<String, String>,
@@ -63,7 +63,7 @@ pub struct ValuesVisitor {
     values: HashMap<String, String>,
 }
 
-impl<'a> Visit for ValuesVisitor {
+impl Visit for ValuesVisitor {
     fn record_debug(&mut self, field: &Field, value: &dyn std::fmt::Debug) {
         if field.name() != "message" {
             self.values.insert(
@@ -89,7 +89,7 @@ impl ValueVisitor {
     }
 }
 
-impl<'a> Visit for ValueVisitor {
+impl Visit for ValueVisitor {
     fn record_debug(&mut self, field: &Field, value: &dyn std::fmt::Debug) {
         if field.name() == self.name {
             self.result = Some(format!("{:?}", value));
@@ -175,7 +175,7 @@ mod tests {
         let server = MockServer::start();
         let loki_layer = LokiLayer::new(server.base_url(), Default::default());
         let subscriber = Registry::default().with(loki_layer);
-        let _quard = tracing::subscriber::set_default(subscriber);
+        let _guard = tracing::subscriber::set_default(subscriber);
         let http_server_mock = server.mock(|when, _then| {
             when.method(httpmock::Method::POST)
                 .path("/loki/api/v1/push");
