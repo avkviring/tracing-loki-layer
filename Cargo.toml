@@ -1,11 +1,17 @@
 [package]
-name = ""
+name = "tracing-loki-layer"
 version = "999.999.999"
 edition = "2021"
 authors = ["Kviring A.V. <alex@kviring.com>"]
 license = "Apache-2.0"
-description = ""
-repository = ""
+description = "std::thread (not tokio) log sender to Loki."
+repository = "https://github.com/cheetah-game-platform/tracing-loki-layer"
 
 [dependencies]
+serde = { version = "1.0.136", features = ["derive"] }
+tracing = { version = "0.1.31" }
+tracing-subscriber = { version = "0.3.9", features = ["env-filter"] }
+reqwest = { version = "0.11.9", features = ["json", "rustls", "blocking"], default-features = false }
 
+[dev-dependencies]
+httpmock = "0.6.6"
