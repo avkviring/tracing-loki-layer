@@ -5,11 +5,11 @@ use std::thread;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use serde::Serialize;
-use tracing::Event;
 use tracing::field::Field;
+use tracing::Event;
 use tracing_subscriber::field::Visit;
-use tracing_subscriber::Layer;
 use tracing_subscriber::layer::Context;
+use tracing_subscriber::Layer;
 
 pub struct LokiLayer {
     default_values: HashMap<String, String>,
@@ -43,14 +43,12 @@ impl LokiLayer {
         let client = reqwest::blocking::Client::new();
         thread::spawn(move || loop {
             match receiver.recv() {
-                Ok(request) => {
-                    match client.post(url.clone()).json(&request).send() {
-                        Ok(_) => {}
-                        Err(e) => {
-                            eprintln!("Error send to loki {:?}", e);
-                        }
+                Ok(request) => match client.post(url.clone()).json(&request).send() {
+                    Ok(_) => {}
+                    Err(e) => {
+                        eprintln!("Error send to loki {:?}", e);
                     }
-                }
+                },
                 Err(e) => {
                     eprintln!("Shutdown loki sender {:?}", e);
                     break;
